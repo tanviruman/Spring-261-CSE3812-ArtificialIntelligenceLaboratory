@@ -1,0 +1,463 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-mono); }
+.wrap { padding: 1rem 0; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+.tab { padding: 6px 14px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 13px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); font-family: var(--font-sans); }
+.tab.active { background: #EEEDFE; color: #3C3489; border-color: #AFA9EC; font-weight: 500; }
+.section { display: none; }
+.section.active { display: block; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.card h3 { font-size: 13px; font-weight: 500; color: #3C3489; margin-bottom: 10px; font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.04em; }
+pre { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; font-size: 12px; overflow-x: auto; line-height: 1.6; color: var(--color-text-primary); white-space: pre-wrap; }
+.note { font-size: 12px; color: var(--color-text-secondary); font-family: var(--font-sans); margin-top: 8px; line-height: 1.5; }
+.badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; font-family: var(--font-sans); font-weight: 500; margin-bottom: 6px; }
+.badge.tip { background: #EAF3DE; color: #3B6D11; }
+.badge.warn { background: #FAEEDA; color: #854F0B; }
+.badge.exam { background: #FAECE7; color: #993C1D; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media(max-width:600px){ .grid2 { grid-template-columns: 1fr; } }
+</style>
+<div class="wrap">
+<div class="tabs">
+  <button class="tab active" onclick="show('basics')">Variables & I/O</button>
+  <button class="tab" onclick="show('loops')">Loops & Strings</button>
+  <button class="tab" onclick="show('ds')">Lists, Dict, Tuple</button>
+  <button class="tab" onclick="show('funcs')">Functions</button>
+  <button class="tab" onclick="show('oop')">Classes (OOP)</button>
+  <button class="tab" onclick="show('numpy')">NumPy</button>
+  <button class="tab" onclick="show('plot')">Matplotlib</button>
+  <button class="tab" onclick="show('practice')">Practice Answers</button>
+</div>
+
+<div id="basics" class="section active">
+  <div class="card">
+    <h3>Variables — dynamically typed, no declaration needed</h3>
+    <pre>x = 5          # int
+y = 3.14       # float
+s = "hello"    # str
+a, b = 5, 10   # multiple assignment
+print(type(x)) # &lt;class 'int'&gt;</pre>
+  </div>
+  <div class="card">
+    <h3>Print styles</h3>
+    <pre>print(f"{a} apples, {b} oranges")  # f-string ✓ preferred
+print("%2d apples" % a)            # old style
+print(a, 'apples', b, 'oranges')   # comma-separated</pre>
+  </div>
+  <div class="card">
+    <h3>Input — ALWAYS string by default!</h3>
+    <pre>n = int(input())        # read integer
+x = float(input())      # read float
+s = input()             # read string</pre>
+    <span class="badge warn">Exam trap</span>
+    <p class="note">input() returns str. Always typecast: int(input()) or float(input())</p>
+  </div>
+  <div class="card">
+    <h3>Typecasting</h3>
+    <pre>int("42")    # → 42
+float("3.5") # → 3.5
+str(100)     # → "100"
+# str + str = concatenation: "100"+"1" = "1001"
+# int + int = addition:       100 + 1  = 101</pre>
+  </div>
+  <div class="card">
+    <h3>Arithmetic operators</h3>
+    <pre>+  -  *  /    # basic
+**            # power:  3**2 = 9
+%             # modulus: 7%3 = 1
+//            # floor division: 7//3 = 2</pre>
+  </div>
+</div>
+
+<div id="loops" class="section">
+  <div class="card">
+    <h3>if / elif / else</h3>
+    <pre>if n % 2 == 0:
+    print("even")
+elif n % 2 == 1:
+    print("odd")
+else:
+    print("ERROR")</pre>
+  </div>
+  <div class="card">
+    <h3>for loop + range</h3>
+    <pre>for i in range(5):        # 0,1,2,3,4
+    print(i)
+
+for i in range(1, 10, 2): # 1,3,5,7,9 (start,stop,step)
+    print(i)
+
+for item in my_list:      # iterate over list
+    print(item)</pre>
+  </div>
+  <div class="card">
+    <h3>while loop</h3>
+    <pre>i = 0
+while i &lt; 5:
+    print(i)
+    i += 1</pre>
+  </div>
+  <div class="card">
+    <h3>String operations</h3>
+    <pre>s = "I study in UIU"
+words = s.split()         # ['I','study','in','UIU']
+for w in words:
+    print(w)
+
+s.upper()   s.lower()   s.capitalize()
+s.strip()               # remove spaces
+len(s)                  # length
+s[0]                    # first char: 'I'
+s[-1]                   # last char: 'U'
+s[0:5]                  # slice: "I stu"</pre>
+    <span class="badge exam">Problem 1 solution</span>
+    <pre>s = input()
+for w in s.split():
+    print(w)</pre>
+  </div>
+</div>
+
+<div id="ds" class="section">
+  <div class="card">
+    <h3>List — mutable, ordered, any types</h3>
+    <pre>arr = ['apple', 100, 3.4, [1,2], (2,3)]
+arr.append(5)         # add to end
+arr.pop()             # remove last
+arr.remove('apple')   # remove by value
+arr[0]                # first element
+arr[-1]               # last element
+arr[1:3]              # slice [100, 3.4]
+arr[::-1]             # reverse
+len(arr)              # length
+arr.copy()            # shallow copy — changes won't affect original</pre>
+    <span class="badge warn">Copy trap</span>
+    <p class="note">bar = foo → SAME object (both change). bar = foo.copy() → independent. For nested lists use copy.deepcopy(foo)</p>
+  </div>
+  <div class="card">
+    <h3>Dictionary — key:value pairs</h3>
+    <pre>d = {"name": "Alice", "age": 20, 1: "what"}
+d["name"]          # access: 'Alice'
+d.get("age")       # safe access
+d.keys()           # all keys
+d.values()         # all values
+d["name"] = "Bob"  # update
+del d["age"]       # delete
+"name" in d        # membership: True
+
+for key in d:      # iterate
+    print(key, d[key])</pre>
+    <span class="badge tip">Key rule</span>
+    <p class="note">Keys must be immutable (str, int, tuple ✓). Lists can NOT be keys. Duplicate key → last value wins.</p>
+  </div>
+  <div class="card">
+    <h3>Tuple — immutable, ordered</h3>
+    <pre>t = (1, 2, 3)
+t[0]           # access: 1
+# t[0] = 5    # ERROR — cannot change
+a, b, c = t   # unpack</pre>
+  </div>
+  <div class="card">
+    <h3>isinstance() check</h3>
+    <pre>isinstance(x, list)   # True if x is a list
+isinstance(x, int)    # True if x is int
+isinstance(x, str)    # True if x is str</pre>
+  </div>
+</div>
+
+<div id="funcs" class="section">
+  <div class="card">
+    <h3>Define and call a function</h3>
+    <pre>def greet(name):
+    return "Hello " + name
+
+result = greet("Alice")
+print(result)</pre>
+  </div>
+  <div class="card">
+    <h3>Default parameters</h3>
+    <pre>def canvote(age=0):
+    if age >= 18:
+        return True
+    return False
+
+canvote(25)      # True
+canvote()        # uses default 0 → False
+canvote(age=20)  # keyword arg</pre>
+    <span class="badge warn">Rule</span>
+    <p class="note">Default params must come AFTER non-default params.</p>
+  </div>
+  <div class="card">
+    <h3>Return multiple values</h3>
+    <pre>def minmax(arr):
+    return min(arr), max(arr)
+
+mn, mx = minmax([1, 5, 3])
+# or: result = minmax([1,5,3]); result[0], result[1]</pre>
+  </div>
+  <div class="card">
+    <h3>import math</h3>
+    <pre>import math
+math.sqrt(25)   # 5.0
+math.pi         # 3.14159...
+math.floor(3.7) # 3
+math.ceil(3.2)  # 4</pre>
+  </div>
+</div>
+
+<div id="oop" class="section">
+  <div class="card">
+    <h3>Class structure — MEMORIZE THIS</h3>
+    <pre>class BankAccount:
+    count = 0  # class/static variable (shared)
+
+    def __init__(self, account_number, balance=0):
+        self.account_number = account_number  # instance var
+        self.balance = balance
+        BankAccount.count += 1
+
+    def deposit(self, amount):
+        self.balance += amount
+
+    def withdraw(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+        else:
+            print("Insufficient funds")
+
+    def display(self):
+        print(f"Acc: {self.account_number}, Bal: {self.balance}")
+
+    def __str__(self):       # called by print()
+        return f"Account {self.account_number}"
+
+    @staticmethod
+    def is_valid(amount):    # no self needed
+        return amount > 0
+
+# Create object and test
+acc = BankAccount("001", 1000)
+acc.deposit(500)
+acc.withdraw(200)
+acc.display()</pre>
+    <span class="badge exam">Problem 5 solution above</span>
+  </div>
+  <div class="card">
+    <h3>Inheritance</h3>
+    <pre>class Developer(Employee):
+    def __init__(self, first, last, pay, lang):
+        super().__init__(first, last, pay)  # call parent
+        self.lang = lang
+
+isinstance(obj, ClassName)   # is obj an instance?
+issubclass(Child, Parent)    # is Child a subclass?</pre>
+  </div>
+  <div class="card">
+    <h3>Key OOP vocabulary</h3>
+    <pre>__init__   → constructor
+self       → like "this" in Java/C++
+__str__    → toString() — called by print()
+@staticmethod → same for all objects, no self
+class var  → shared across all objects
+instance var → unique to each object</pre>
+    <span class="badge warn">Python does NOT support overloading</span>
+    <p class="note">If you define two functions with same name, the second one overwrites the first.</p>
+  </div>
+</div>
+
+<div id="numpy" class="section">
+  <div class="card">
+    <h3>Create arrays</h3>
+    <pre>import numpy as np
+
+np.array([1, 2, 3])              # 1D from list
+np.array([[1,2],[3,4]])          # 2D from nested list
+np.zeros((3, 4))                 # all zeros, shape 3x4
+np.ones((2, 2))                  # all ones
+np.full((2, 2), 5)               # all fives
+np.eye(3)                        # 3x3 identity matrix
+np.random.random((3, 4))         # random floats 0-1
+np.random.randint(0, 50, (4,5))  # random ints</pre>
+  </div>
+  <div class="card">
+    <h3>Shape, reshape, split</h3>
+    <pre>a.shape          # e.g. (3, 4)
+a.reshape(1, 12) # reshape to (1, 12)
+a.reshape(-1)    # flatten to 1D
+
+np.split(arr, 3) # split into 3 equal parts</pre>
+    <span class="badge exam">Problem 6 hint</span>
+    <pre>arr = np.array(arr_2d)
+flat = arr.reshape(1, r*c)
+print(flat)</pre>
+  </div>
+  <div class="card">
+    <h3>Slicing 2D arrays — VERY IMPORTANT</h3>
+    <pre>a = np.array([[1,2,3,4],
+              [5,6,7,8],
+              [9,0,1,2]])
+
+a[1:3, :]    # rows 1&2, all cols → [[5,6,7,8],[9,0,1,2]]
+a[1:3, 2:]   # rows 1&2, cols 2+ → [[7,8],[1,2]]
+a[:, 1]      # all rows, col 1   → [2,6,0]
+a[0, 2]      # row 0, col 2      → 3
+a[-2:, :]    # last 2 rows</pre>
+    <span class="badge exam">Slicing problem hint</span>
+    <pre>mat = np.array([[1,2,3],[4,5,6],[7,8,9]])
+last2 = mat[1:, :]      # last 2 rows
+print(np.sum(last2))</pre>
+  </div>
+  <div class="card">
+    <h3>Operations</h3>
+    <pre>x + y          # element-wise add
+x - y          # element-wise subtract
+x * y          # element-wise multiply (NOT dot product!)
+x / y          # element-wise divide
+x.dot(y)       # matrix dot product
+np.dot(x, y)   # same
+
+np.sum(x)         # sum of ALL elements
+np.sum(x, axis=0) # sum each COLUMN (reduce rows)
+np.sum(x, axis=1) # sum each ROW (reduce cols)
+x.T               # transpose</pre>
+  </div>
+</div>
+
+<div id="plot" class="section">
+  <div class="card">
+    <h3>Basic matplotlib plot</h3>
+    <pre>import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 10, 100)   # 100 points from 0 to 10
+y = x**2                       # compute y
+
+plt.plot(x, y, label='x²')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('My Plot')
+plt.legend()
+plt.grid(True)
+plt.show()</pre>
+  </div>
+  <div class="card">
+    <h3>Piecewise function (Problem 7)</h3>
+    <pre>import numpy as np
+import matplotlib.pyplot as plt
+
+x1 = np.linspace(0, 4, 100)
+y1 = x1**2
+
+x2 = np.linspace(4, 8, 100)
+y2 = np.full_like(x2, 16)     # constant 16
+
+x3 = np.linspace(8, 12, 100)
+y3 = (12 - x3)**2
+
+plt.plot(x1, y1, label='x² [0,4)')
+plt.plot(x2, y2, label='16 [4,8)')
+plt.plot(x3, y3, label='(12-x)² [8,12]')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Piecewise Function')
+plt.legend()
+plt.grid(True)
+plt.show()</pre>
+    <span class="badge exam">This is exactly Problem 7</span>
+  </div>
+  <div class="card">
+    <h3>Common plot types</h3>
+    <pre>plt.plot(x, y)        # line plot
+plt.scatter(x, y)     # scatter plot
+plt.bar(x, y)         # bar chart
+plt.hist(data)        # histogram
+plt.show()            # always at the end!</pre>
+  </div>
+</div>
+
+<div id="practice" class="section">
+  <div class="card">
+    <h3>Problem 1 — print words separately</h3>
+    <pre>s = input()
+for word in s.split():
+    print(word)</pre>
+  </div>
+  <div class="card">
+    <h3>Problem 2 — sum of squares (odd/even)</h3>
+    <pre>n = int(input())
+total = 0
+if n % 2 == 1:          # odd
+    for i in range(1, n+1, 2):
+        total += i**2
+elif n % 2 == 0:        # even
+    for i in range(1, n+2, 2):
+        total += i**2
+else:
+    print("ERROR")
+print(total)</pre>
+    <p class="note">Note: any int IS odd or even. "else" covers non-integer types if needed.</p>
+  </div>
+  <div class="card">
+    <h3>Problem 3 — reverse() function</h3>
+    <pre>def reverse(lst):
+    return lst[::-1]
+
+arr = ['apple', 'grape', 100, 3.4, [1,2], (2,3)]
+print(reverse(arr))</pre>
+  </div>
+  <div class="card">
+    <h3>Problem 4 — make dict from keys & values</h3>
+    <pre>def make_dict(k, v):
+    if not isinstance(k, list) or not isinstance(v, list):
+        print("ERROR")
+        return
+    return dict(zip(k, v))
+
+keys = ['a', 'b', 'c']
+vals = [1, 2, 3]
+print(make_dict(keys, vals))</pre>
+  </div>
+  <div class="card">
+    <h3>Problem 5 — BankAccount class (see OOP tab)</h3>
+    <span class="badge exam">Check the OOP tab for full class code</span>
+  </div>
+  <div class="card">
+    <h3>Problem 6 — 2D numpy array → reshape</h3>
+    <pre>import numpy as np
+r, c = int(input()), int(input())
+arr = []
+for i in range(r):
+    row = []
+    for j in range(c):
+        row.append(int(input()))
+    arr.append(row)
+arr = np.array(arr)
+print(arr.reshape(1, r*c))</pre>
+  </div>
+  <div class="card">
+    <h3>Slicing problem — last 2 rows sum</h3>
+    <pre>import numpy as np
+mat = np.array([[1,2,3],[4,5,6],[7,8,9]])
+last2 = mat[-2:, :]   # or mat[1:, :]
+print(np.sum(last2))</pre>
+  </div>
+  <div class="card">
+    <h3>1D array → split into 3 parts</h3>
+    <pre>import numpy as np
+arr = np.array([1,2,3,4,5,6,7,8,9])
+parts = np.split(arr, 3)
+print(parts)   # [array([1,2,3]), array([4,5,6]), array([7,8,9])]</pre>
+    <span class="badge warn">Array length must be divisible by 3!</span>
+  </div>
+</div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
